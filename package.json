@@ -1,0 +1,31 @@
+{
+  "name": "doodlang",
+  "version": "0.1.0",
+  "description": "Program with doodles",
+  "main": "index.js",
+  "scripts": {
+    "build": "webpack --config webpack.config.js",
+    "start": "webpack-dev-server"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jorpic/doodlang.git"
+  },
+  "keywords": [
+    "apl",
+    "wasm"
+  ],
+  "author": "Max Taldykin <jorpic@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jorpic/doodlang/issues"
+  },
+  "homepage": "https://github.com/jorpic/doodlang#readme",
+  "devDependencies": {
+    "doodlang-core": "^0.1.0",
+    "webpack": "^4.16.3",
+    "webpack-cli": "^3.1.0",
+    "webpack-dev-server": "^3.1.5",
+    "copy-webpack-plugin": "^4.5.2"
+  }
+}
