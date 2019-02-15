@@ -55,11 +55,7 @@ function handleEnd(ev) {
       this.stroke(prev[0], touch);
       prev.unshift(touch);
       delete this.touches[t.identifier];
-      if (this.onFinish) {
-        this.onFinish(t.identifier, prev);
-      } else {
-        console.log("Finished", t.identifier, prev);
-      }
+      this.onFinish && this.onFinish(t.identifier, prev);
     }
   }
 }
@@ -72,11 +68,7 @@ function handleCancel() {
       const touch = {x: t.pageX, y: t.pageY};
       prev.unshift(touch);
       delete this.touches[t.identifier];
-      if (this.onCancel) {
-        this.onCancel(t.identifier, prev);
-      } else {
-        console.log("Cancelled", t.identifier, prev);
-      }
+      this.onCancel && this.onCancel(t.identifier, prev);
     }
   }
 }
