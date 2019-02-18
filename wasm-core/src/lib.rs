@@ -48,21 +48,32 @@ impl SymbolStorage {
         Ok(self.symbols.len() - 1)
     }
 
-    pub fn draw(
-        &self, ctx: &CanvasRenderingContext2d,
-        ix: usize,
-        x: f64,
-        y: f64,
-        w: f64,
-        h: f64,
+    pub fn draw_program(
+        &self,
+        ctx: &CanvasRenderingContext2d,
+        program: &[u32],
+        start_x: f64,
+        start_y: f64,
+        size: f64, // symbol_size
     ) {
-        ctx.begin_path();
-        let p = &self.symbols[ix][0][0];
-        ctx.move_to(x + p.x * w, y + p.y * h);
-        for p in &self.symbols[ix][0][0..] {
-            ctx.line_to(x + p.x * w, y + p.y * h);
+        let mut x = start_x;
+        let y = start_y;
+
+        for &sym_ix in program {
+            let symbol = &self.symbols[sym_ix as usize];
+            ctx.begin_path();
+            for path in symbol {
+                if path.is_empty() {
+                    continue;
+                }
+                ctx.move_to(x + path[0].x * size, y + path[0].y * size);
+                for p in &path[0..] {
+                    ctx.line_to(x + p.x * size, y + p.y * size);
+                }
+            }
+            ctx.stroke();
+            x = x + size;
         }
-        ctx.stroke();
     }
 
 
