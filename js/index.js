@@ -11,4 +11,9 @@ canvas.onFinish = function (id, path) {
   symbols.match_symbol([scaled]);
   const ix = symbols.add_symbol([scaled]);
   console.log("Line finished", id, ix, scaled);
+
+  const ctx = el.getContext("2d");
+  this.ctx.lineWidth = 1;
+  this.ctx.strokeStyle = "red";
+  symbols.draw(ctx, ix, 40, 40, 40, 40);
 };
