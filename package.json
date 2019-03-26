@@ -22,12 +22,17 @@
   },
   "homepage": "https://github.com/jorpic/doodlang#readme",
   "devDependencies": {
+    "copy-webpack-plugin": "^4.5.2",
+    "css-loader": "^2.1.1",
+    "mini-css-extract-plugin": "^0.5.0",
+    "style-loader": "^0.23.1",
     "webpack": "^4.16.3",
     "webpack-cli": "^3.1.0",
-    "webpack-dev-server": "^3.1.5",
-    "copy-webpack-plugin": "^4.5.2"
+    "webpack-dev-server": "^3.1.5"
   },
   "dependencies": {
+    "bulma": "^0.7.4",
+    "@vizuaalog/bulmajs": "^0.9.1",
     "doodlang-core": "^0.1.0"
   }
 }

@@ -2,6 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Doodle the code!</title>
     <style>
       #canvas {
@@ -10,10 +11,30 @@
     </style>
   </head>
   <body>
-    <div>
-      <canvas id="canvas" width="800" height="800">Canvas here.</canvas>
+    <div class="columns is-mobile is-centered">
+      <div class="tabs-wrapper">
+        <div class="tabs is-centered">
+          <ul>
+            <li class="is-active"><a>Add symbol</a></li>
+            <li><a>Library</a></li>
+            <li><a>Program</a></li>
+          </ul>
+        </div>
+        <div class="tabs-content">
+          <ul>
+            <li class="is-active">
+              <div>
+                <canvas id="canvas" width="800" height="800">Canvas here.</canvas>
+              </div>
+              <button id="addSymbol">Add Symbol</button>
+            </li>
+            <li><h1>Library</h1></li>
+            <li><h1>Program</h1></li>
+          </ul>
+        </div>
+      <div>
     </div>
-    <button id="addSymbol">Add Symbol</button>
+
     <script src="./bootstrap.js"></script>
   </body>
 </html>
