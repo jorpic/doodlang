@@ -7,11 +7,12 @@ Bulma.traverseDOM();
 
 import * as wasm from "doodlang-core";
 import { Canvas } from "./canvas";
+import { Symbol } from "./test_symbols";
 
 
 const symbols = new wasm.SymbolStorage();
 
-const el = document.getElementById("canvas");
+const el = document.getElementById("canvas-new");
 const canvas = new Canvas(el);
 
 let currentSymbol = [];
@@ -38,11 +39,35 @@ btn.onclick = function () {
 };
 
 
+const BTN_SIZE = 40;
+const lib = document.getElementById("library-buttons");
+const canvas_lib = document.getElementById("canvas-lib");
+const canvas_lib_ctx = canvas_lib.getContext("2d");
+for (const s in Symbol) {
+  const sym = Symbol[s];
+  const ix = symbols.add_symbol(sym);
+
+  const el = document.createElement("canvas");
+  el.className = "symbol-btn";
+  el.width = BTN_SIZE;
+  el.height = BTN_SIZE;
+  el.onclick = function() {
+    const h = canvas_lib.height;
+    const w = canvas_lib.width;
+    canvas_lib_ctx.clearRect(0, 0, w, h);
+    symbols.draw_program(canvas_lib_ctx, [ix], 0, 0, h < w ? h : w);
+  };
+  lib.appendChild(el);
+
+  const ctx = el.getContext("2d");
+  ctx.lineWidth = 1;
+  ctx.strokeStyle = "black";
+  symbols.draw_program(ctx, [ix], 0, 0, BTN_SIZE);
+}
+
 
 /* TODO:
- *   - import predefined symbols
- *   - draw predefined symbols
- *   - process predefined symbols
- *   - draw processed symbols to compare differences
+ *   - process symbols
+ *   - draw processed symbol over original to compare differences
  *   - calculate gDTW
  */

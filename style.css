@@ -1,3 +1,6 @@
+#canvas-new {
+  border: solid black 1px;
+}
 
 
 /* Hide inactive tabs */
@@ -8,4 +11,14 @@
 
 .tabs-content li.is-active {
     display: block;
+}
+
+.symbol-btn {
+  cursor: pointer;
+  margin: 3px;
+}
+
+.symbol-btn:hover {
+  margin: 0;
+  border: 3px solid grey;
 }

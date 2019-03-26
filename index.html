@@ -4,11 +4,6 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Doodle the code!</title>
-    <style>
-      #canvas {
-        border: solid black 1px;
-      }
-    </style>
   </head>
   <body>
     <div class="columns is-mobile is-centered">
@@ -24,11 +19,15 @@
           <ul>
             <li class="is-active">
               <div>
-                <canvas id="canvas" width="800" height="800">Canvas here.</canvas>
+                <canvas id="canvas-new" width="800" height="800">Canvas here.</canvas>
               </div>
               <button id="addSymbol">Add Symbol</button>
             </li>
-            <li><h1>Library</h1></li>
+            <li>
+              <div id="library-buttons" class="container is-centered">
+              </div>
+              <canvas id="canvas-lib" width="800" height="800">Canvas here.</canvas>
+            </li>
             <li><h1>Program</h1></li>
           </ul>
         </div>
