@@ -9,49 +9,68 @@ const two = new Two({
 const canvasDiv = document.getElementById("canvas");
 two.appendTo(canvas);
 
-const line = two.makeLine(10, 20, 40, 50);
-line.noFill().stroke = "#6dcff6";
-line.linewidth = 10;
-two.update();
+let isMouseDown = false;
+let symbol = [];
+let points = [];
 
 
-let start = null;
+const last = xs => xs[xs.length-1];
+const newVec = p => new Two.Vector(p.x, p.y);
 
-function addPoint(p) {
-  const end = new Two.Vector(p.clientX || p.pageX, p.clientY || p.pageY);
+function addCurve(ps) {
+  const [a, b] = ps;
+  const path = two.makePath(a.x, a.y, b.x, b.y, true);
+  path.noFill().stroke = "#6dcff6";
+  path.linewidth = 10;
+  path.vertices.forEach(v => v.addSelf(path.translation));
+  path.translation.clear();
 
-  if(start && end.distanceTo(start) > 10) {
-    const line = two.makeLine(start.x, start.y, end.x, end.y, true);
-    line.noFill().stroke = "#6dcff6";
-    line.linewidth = 10;
-    start = end.clone();
-  }
+  ps.slice(2)
+    .forEach(p => path.vertices.push(newVec(p)));
+  symbol.push({path, points: ps});
+}
 
-  if(!start) {
-    start = end;
+
+function addPoint(ev) {
+  const p = {x: ev.clientX || ev.pageX, y: ev.clientY || ev.pageY};
+  points.push(p);
+  if(points.length == 2) {
+    addCurve(points);
+  } else if(points.length > 1) {
+    last(symbol).path.vertices.push(newVec(p));
   }
 }
 
-window.addEventListener("mousedown", addPoint);
-window.addEventListener("mousemove", e => start && addPoint(e));
-window.addEventListener("mouseup", e => {
-  addPoint(e);
-  start = null;
-});
 
-window.addEventListener("touchstart", e => {
+function finishLine() {
+  points = [];
+  isMouseDown = false;
+}
+
+
+function addTouch(e) {
   e.preventDefault();
-  const touch = e.changedTouches[0];
-  addPoint(touch);
-}, {passive: false});
+  addPoint(e.changedTouches[0]);
+}
 
-window.addEventListener("touchmove", e => {
-  e.preventDefault();
-  const touch = e.changedTouches[0];
-  addPoint(touch);
-}, {passive: false});
 
-window.addEventListener("touchend", () => {
-  start = null;
-});
+document.addEventListener("mousedown", e => { isMouseDown = true; });
+document.addEventListener("mousemove", e => isMouseDown && addPoint(e));
+document.addEventListener("mouseup", finishLine);
 
+document.addEventListener("touchstart", addTouch, {passive: false});
+document.addEventListener("touchmove", addTouch, {passive: false});
+document.addEventListener("touchend", finishLine);
+
+
+const deletedPoints = [];
+document.addEventListener("keydown", e => {
+  if (event.ctrlKey && event.key === "z" && symbol.length) {
+    const c = symbol.pop();
+    c.path.remove();
+    deletedPoints.push(c.points);
+  }
+  if (event.ctrlKey && event.key === "y" && deletedPoints.length) {
+    addCurve(deletedPoints.pop());
+  }
+}, false);
