@@ -1,4 +1,3 @@
-node_modules/
-wasm-core/pkg/
+node_modules
 dist
-target
+.cache
