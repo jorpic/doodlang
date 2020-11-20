@@ -4,7 +4,8 @@
   "description": "Program with doodles",
   "scripts": {
     "build": "parcel build src/index.html",
-    "start": "parcel start src/index.html"
+    "start": "parcel start src/index.html",
+    "deploy": "rm -rf dist && parcel build --public-url /doodlang src/index.html && gh-pages -d dist"
   },
   "repository": {
     "type": "git",
@@ -21,6 +22,7 @@
   },
   "homepage": "https://github.com/jorpic/doodlang#readme",
   "devDependencies": {
+    "gh-pages": "^3.1.0",
     "parcel": "^1.12.4"
   },
   "dependencies": {
