@@ -2,7 +2,7 @@ import 'bulma/css/bulma.css'
 import Two from 'twojs-ts';
 
 const scratchpad = document.getElementById("scratchpad");
-const scratchpadRect = scratchpad.getBoundingClientRect();
+let scratchpadRect = scratchpad.getBoundingClientRect();
 const two = new Two({
   type: Two.Types.svg,
   autostart: true,
@@ -85,3 +85,11 @@ window.addEventListener("keydown", e => {
   e.ctrlKey && e.key === "z" && undo();
   e.ctrlKey && e.key === "y" && redo();
 }, false);
+
+
+window.addEventListener("orientationchange", function() {
+  scratchpadRect = scratchpad.getBoundingClientRect();
+});
+window.addEventListener("resize", function() {
+  scratchpadRect = scratchpad.getBoundingClientRect();
+});
