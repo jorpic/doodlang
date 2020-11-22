@@ -1,18 +1,20 @@
+import 'bulma/css/bulma.css'
 import Two from 'twojs-ts';
 
+const scratchpad = document.getElementById("scratchpad");
+const scratchpadRect = scratchpad.getBoundingClientRect();
 const two = new Two({
-  type: Two.Types.svg
-  fullscreen: true,
-  autostart: true
+  type: Two.Types.svg,
+  autostart: true,
+  width: scratchpad.offsetWidth,
+  height: scratchpad.offsetHeight
 });
 
-const canvasDiv = document.getElementById("canvas");
-two.appendTo(canvas);
+two.appendTo(scratchpad);
 
-let isMouseDown = false;
+
 let symbol = [];
 let points = [];
-
 
 const last = xs => xs[xs.length-1];
 const newVec = p => new Two.Vector(p.x, p.y);
@@ -32,8 +34,12 @@ function addCurve(ps) {
 
 
 function addPoint(ev) {
-  const p = {x: ev.clientX || ev.pageX, y: ev.clientY || ev.pageY};
+  const p = {
+    x: ev.clientX - scratchpadRect.left,
+    y: ev.clientY - scratchpadRect.top
+  };
   points.push(p);
+
   if(points.length == 2) {
     addCurve(points);
   } else if(points.length > 1) {
@@ -44,9 +50,7 @@ function addPoint(ev) {
 
 function finishLine() {
   points = [];
-  isMouseDown = false;
 }
-
 
 function addTouch(e) {
   e.preventDefault();
@@ -54,23 +58,30 @@ function addTouch(e) {
 }
 
 
-document.addEventListener("mousedown", e => { isMouseDown = true; });
-document.addEventListener("mousemove", e => isMouseDown && addPoint(e));
+scratchpad.addEventListener("mousemove", e => e.buttons && addPoint(e));
 document.addEventListener("mouseup", finishLine);
 
-document.addEventListener("touchstart", addTouch, {passive: false});
-document.addEventListener("touchmove", addTouch, {passive: false});
+scratchpad.addEventListener("touchmove", addTouch, {passive: false});
 document.addEventListener("touchend", finishLine);
 
 
 const deletedPoints = [];
-document.addEventListener("keydown", e => {
-  if (event.ctrlKey && event.key === "z" && symbol.length) {
+
+function undo() {
+  if(symbol.length) {
     const c = symbol.pop();
     c.path.remove();
     deletedPoints.push(c.points);
   }
-  if (event.ctrlKey && event.key === "y" && deletedPoints.length) {
+}
+
+function redo() {
+  if(deletedPoints.length) {
     addCurve(deletedPoints.pop());
   }
+}
+
+window.addEventListener("keydown", e => {
+  e.ctrlKey && e.key === "z" && undo();
+  e.ctrlKey && e.key === "y" && redo();
 }, false);
