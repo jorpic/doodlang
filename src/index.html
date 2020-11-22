@@ -7,18 +7,35 @@
     <style>
       html, body {
         height: 100%;
+        box-sizing: border-box;
       }
 
       #main {
         height: 100%;
         min-height: 100%;
         display: flex;
-        flex-direction: row;
+      }
+
+      @media screen and (orientation:landscape) {
+        #main {
+          flex-direction: row;
+        }
+        .left, .right {
+          flex-direction: column;
+        }
+      }
+
+      @media screen and (orientation:portrait) {
+        #main {
+          flex-direction: column;
+        }
+        .left, .right {
+          flex-direction: row;
+        }
       }
 
       .left, .right {
-        border: 2px solid black;
-        width: 10%;
+        display: flex;
       }
 
       #scratchpad {
@@ -32,6 +49,16 @@
       </aside>
       <div id="scratchpad"></div>
       <aside class="right">
+        <button id="undo" class="button is-large">
+          <span class="icon is-medium has-text-danger">
+            <i class="fas fa-undo fa-2x"></i>
+          </span>
+        </button>
+        <button id="redo" class="button is-large">
+          <span class="icon is-medium has-text-success">
+            <i class="fas fa-redo fa-2x"></i>
+          </span>
+        </button>
       </aside>
     </div>
     <script src="./index.ts"></script>

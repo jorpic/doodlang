@@ -1,5 +1,7 @@
-import 'bulma/css/bulma.css'
-import Two from 'twojs-ts';
+import "bulma/css/bulma.css"
+import "@fortawesome/fontawesome-free/css/all.css"
+import Two from "twojs-ts"
+
 
 const scratchpad = document.getElementById("scratchpad");
 let scratchpadRect = scratchpad.getBoundingClientRect();
@@ -86,10 +88,16 @@ window.addEventListener("keydown", e => {
   e.ctrlKey && e.key === "y" && redo();
 }, false);
 
+document.getElementById("undo").onclick = undo;
+document.getElementById("redo").onclick = redo;
 
-window.addEventListener("orientationchange", function() {
-  scratchpadRect = scratchpad.getBoundingClientRect();
-});
-window.addEventListener("resize", function() {
-  scratchpadRect = scratchpad.getBoundingClientRect();
-});
+
+function resizeScratchpad() {
+  setTimeout(() => { // wait a bit to let DOM element to redraw
+    scratchpadRect = scratchpad.getBoundingClientRect();
+    two.renderer.setSize(scratchpad.offsetWidth, scratchpad.offsetHeight);
+  }, 100);
+}
+
+window.addEventListener("orientationchange", resizeScratchpad);
+window.addEventListener("resize", resizeScratchpad);
