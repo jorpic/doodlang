@@ -8,8 +8,7 @@ let scratchpadRect = scratchpad.getBoundingClientRect();
 const two = new Two({
   type: Two.Types.svg,
   autostart: true,
-  width: scratchpad.offsetWidth,
-  height: scratchpad.offsetHeight
+  fullscreen: true
 });
 
 two.appendTo(scratchpad);
@@ -21,17 +20,29 @@ let points = [];
 const last = xs => xs[xs.length-1];
 const newVec = p => new Two.Vector(p.x, p.y);
 
-function addCurve(ps) {
-  const [a, b] = ps;
-  const path = two.makePath(a.x, a.y, b.x, b.y, true);
-  path.noFill().stroke = "#6dcff6";
-  path.linewidth = 10;
-  path.vertices.forEach(v => v.addSelf(path.translation));
-  path.translation.clear();
 
-  ps.slice(2)
-    .forEach(p => path.vertices.push(newVec(p)));
-  symbol.push({path, points: ps});
+function makePath(points, color, linewidth) {
+  if(points.length > 1) {
+    const [a, b] = points;
+    const path = two.makePath(a.x, a.y, b.x, b.y, true);
+    path.noFill().stroke = color;
+    path.linewidth = linewidth;
+    path.vertices.forEach(v => v.addSelf(path.translation));
+    path.translation.clear();
+
+    points.slice(2)
+      .forEach(p => path.vertices.push(newVec(p)));
+
+    return path;
+  }
+}
+
+
+function addCurve(ps) {
+  symbol.push({
+    path: makePath(ps, "#6dcff6", 10),
+    points: ps
+  });
 }
 
 
@@ -55,15 +66,18 @@ function finishLine() {
 }
 
 function addTouch(e) {
-  e.preventDefault();
   addPoint(e.changedTouches[0]);
 }
 
 
-scratchpad.addEventListener("mousemove", e => e.buttons && addPoint(e));
+document.addEventListener("mousemove", e => {
+  e.stopPropagation();
+  e.preventDefault();
+  if(e.buttons) addPoint(e);
+}, {capture: true});
 document.addEventListener("mouseup", finishLine);
 
-scratchpad.addEventListener("touchmove", addTouch, {passive: false});
+document.addEventListener("touchmove", addTouch, {passive: false});
 document.addEventListener("touchend", finishLine);
 
 

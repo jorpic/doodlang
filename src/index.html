@@ -36,18 +36,25 @@
 
       .left, .right {
         display: flex;
+        z-index: 2;
+      }
+
+      .container {
+        flex: 1;
       }
 
       #scratchpad {
-        flex: 1;
+        z-index: 1;
       }
     </style>
   </head>
   <body>
+    <div id="scratchpad"></div>
     <div id="main">
       <aside class="left">
       </aside>
-      <div id="scratchpad"></div>
+      <div class="container">
+      </div>
       <aside class="right">
         <button id="undo" class="button is-large">
           <span class="icon is-medium has-text-danger">
