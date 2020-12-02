@@ -2,6 +2,8 @@ import "bulma/css/bulma.css"
 import "@fortawesome/fontawesome-free/css/all.css"
 import Two from "twojs-ts"
 
+import {normalize} from "./analysis.ts"
+
 
 const scratchpad = document.getElementById("scratchpad");
 let scratchpadRect = scratchpad.getBoundingClientRect();
@@ -62,6 +64,11 @@ function addPoint(ev) {
 
 
 function finishLine() {
+  // draw normalized symbol
+  const norm = normalize(points);
+  makePath(norm, "black", 1);
+
+  // clear current point track
   points = [];
 }
 
